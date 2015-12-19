@@ -17,7 +17,26 @@ $ npm install nativescript-loki --save
 ## Usage
 
 ```js
+// Requirements
+var Loki = require("./node_modules/nativescript-loki/nativescript-loki.js");
 
+// Setup Loki
+var db = new Loki("loki", { autosave: true });
+
+// Check if database exists
+if(db.exists()) {
+    console.log("Database exists");
+}
+
+// Rename database
+db.rename("new-name").then(function() {
+    console.log("Database renamed");
+});
+
+// Remove database
+db.remove().then(function() {
+    console.log("Database removed");
+});
 ```
 
 ## Thanks
