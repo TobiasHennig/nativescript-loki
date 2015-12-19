@@ -26,21 +26,29 @@ module.exports = (function (_super) {
     LokiNs.prototype.exists = function () {
         return fs.File.exists(this.path);
     };
-    LokiNs.prototype.rename = function (newName, callback, scope) {
-        this.getFile().rename(newName + this.extension)
-            .then(function (result) {
-            this.name = newName;
-            callback.call(scope);
-        }, function (err) {
-            callback.call(scope, new Error(err));
+    LokiNs.prototype.rename = function (newName) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            _this.getFile()
+                .rename(newName + _this.extension)
+                .then(function (result) {
+                _this.name = newName;
+                resolve(_this.name);
+            }, function (err) {
+                reject(new Error(err));
+            });
         });
     };
-    LokiNs.prototype.remove = function (callback, scope) {
-        this.getFile().remove()
-            .then(function (result) {
-            callback.call(scope);
-        }, function (err) {
-            callback.call(scope, new Error(err));
+    LokiNs.prototype.remove = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            _this.getFile()
+                .remove()
+                .then(function (result) {
+                resolve();
+            }, function (err) {
+                reject(new Error(err));
+            });
         });
     };
     return LokiNs;

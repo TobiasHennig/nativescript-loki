@@ -29,22 +29,28 @@ export = class LokiNs extends Loki {
         return fs.File.exists(this.path);
     }
 
-    rename(newName: string, callback, scope) {
-        this.getFile().rename(newName + this.extension)
-            .then(function(result) {
-                this.name = newName;
-                callback.call(scope);
-            }, function(err) {
-                callback.call(scope, new Error(err));
-            });
+    rename(newName: string) {
+        return new Promise((resolve, reject) => {
+            this.getFile()
+                .rename(newName + this.extension)
+                .then((result) => {
+                    this.name = newName;
+                    resolve(this.name);
+                }, (err) => {
+                    reject(new Error(err));
+                });
+        });
     }
 
-    remove(callback, scope) {
-        this.getFile().remove()
-            .then(function(result) {
-                callback.call(scope);
-            }, function(err) {
-                callback.call(scope, new Error(err));
-            });
+    remove() {
+        return new Promise((resolve, reject) => {
+            this.getFile()
+                .remove()
+                .then((result) => {
+                    resolve();
+                }, (err) => {
+                    reject(new Error(err));
+                });
+        });
     }
 }
