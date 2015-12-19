@@ -7,7 +7,6 @@ export = class LokiNs extends Loki {
     lokiOptions: any;
     folder: any;
     extension: string;
-    private path: string;
 
     constructor(name = 'loki', lokiOptions = {}, folder = fs.knownFolders.documents()) {
         this.name = name;
@@ -15,13 +14,16 @@ export = class LokiNs extends Loki {
         this.folder = folder;
 
         this.extension = '.db';													// Set extension
-        this.path = fs.path.join(this.folder.path, this.name + this.extension);	// Create path
         this.lokiOptions.adapter = new LokiNativeScriptAdapter();				// Add adapter
 		
         super(this.path, this.lokiOptions);
     }
+    
+    get path(): string {
+        return fs.path.join(this.folder.path, this.name + this.extension);
+    }
 
-    private getFile() {
+    get file() {
         return this.folder.getFile(this.name + this.extension);
     }
 
@@ -31,7 +33,7 @@ export = class LokiNs extends Loki {
 
     rename(newName: string) {
         return new Promise((resolve, reject) => {
-            this.getFile()
+            this.file
                 .rename(newName + this.extension)
                 .then((result) => {
                     this.name = newName;
@@ -44,7 +46,7 @@ export = class LokiNs extends Loki {
 
     remove() {
         return new Promise((resolve, reject) => {
-            this.getFile()
+            this.file
                 .remove()
                 .then((result) => {
                     resolve();

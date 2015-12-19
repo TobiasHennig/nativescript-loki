@@ -16,20 +16,30 @@ module.exports = (function (_super) {
         this.lokiOptions = lokiOptions;
         this.folder = folder;
         this.extension = '.db'; // Set extension
-        this.path = fs.path.join(this.folder.path, this.name + this.extension); // Create path
         this.lokiOptions.adapter = new LokiNativeScriptAdapter(); // Add adapter
         _super.call(this, this.path, this.lokiOptions);
     }
-    LokiNs.prototype.getFile = function () {
-        return this.folder.getFile(this.name + this.extension);
-    };
+    Object.defineProperty(LokiNs.prototype, "path", {
+        get: function () {
+            return fs.path.join(this.folder.path, this.name + this.extension);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(LokiNs.prototype, "file", {
+        get: function () {
+            return this.folder.getFile(this.name + this.extension);
+        },
+        enumerable: true,
+        configurable: true
+    });
     LokiNs.prototype.exists = function () {
         return fs.File.exists(this.path);
     };
     LokiNs.prototype.rename = function (newName) {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            _this.getFile()
+            _this.file
                 .rename(newName + _this.extension)
                 .then(function (result) {
                 _this.name = newName;
@@ -42,7 +52,7 @@ module.exports = (function (_super) {
     LokiNs.prototype.remove = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            _this.getFile()
+            _this.file
                 .remove()
                 .then(function (result) {
                 resolve();
