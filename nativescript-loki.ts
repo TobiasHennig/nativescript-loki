@@ -13,8 +13,8 @@ export = class LokiNs extends Loki {
         this.lokiOptions = lokiOptions;
         this.folder = folder;
 
-        this.extension = '.db';													// Set extension
-        this.lokiOptions.adapter = new LokiNativeScriptAdapter();				// Add adapter
+        this.extension = '.db';										// Set extension
+        this.lokiOptions.adapter = new LokiNativeScriptAdapter();   // Add adapter
 		
         super(this.path, this.lokiOptions);
     }
