@@ -1,8 +1,9 @@
 {
   "name": "nativescript-loki",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Thin wrapper around Loki and Loki NativeScript adapter",
   "main": "nativescript-loki.js",
+  "nativescript": {},
   "keywords": [
     "NativeScript",
     "LokiJs",
